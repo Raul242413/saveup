@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SaveUp</title>
+
+<link rel="stylesheet" href="estilizacao.css">
+</head>
+<body>
+
+<div class="container">
+
+<div class="card">
+
+<h1>SaveUp</h1>
+
+<p class="subtitulo">
+Organize sua vida financeira
+</p>
+
+<div class="abas">
+
+<button onclick="mostrarCadastro()">
+Cadastro
+</button>
+
+<button onclick="mostrarLogin()">
+Login
+</button>
+
+</div>
+
+<div id="cadastroBox">
+
+<input type="text"
+id="nomeCadastro"
+placeholder="Nome">
+
+<input type="email"
+id="emailCadastro"
+placeholder="E-mail">
+
+<input type="password"
+id="senhaCadastro"
+placeholder="Senha">
+
+<button onclick="cadastrar()">
+Criar Conta
+</button>
+
+</div>
+
+<div id="loginBox" style="display:none;">
+
+<input type="email"
+id="emailLogin"
+placeholder="E-mail">
+
+<input type="password"
+id="senhaLogin"
+placeholder="Senha">
+
+<!-- LINK DE ESQUECI A SENHA ADICIONADO AQUI -->
+<a href="esqueci_senha.php" style="color: #00bcd4; text-decoration: none; font-size: 0.85rem; display: block; margin-top: 5px; margin-bottom: 15px; text-align: right;">
+    Esqueci minha senha
+</a>
+
+<button onclick="login()">
+Entrar
+</button>
+
+</div>
+
+<p id="mensagem"></p>
+
+</div>
+
+</div>
+
+<script>
+
+function mostrarCadastro(){
+
+document.getElementById("cadastroBox").style.display="block";
+document.getElementById("loginBox").style.display="none";
+
+}
+
+function mostrarLogin(){
+
+document.getElementById("cadastroBox").style.display="none";
+document.getElementById("loginBox").style.display="block";
+
+}
+
+async function cadastrar(){
+
+let nome =
+document.getElementById("nomeCadastro").value;
+
+let email =
+document.getElementById("emailCadastro").value;
+
+let senha =
+document.getElementById("senhaCadastro").value;
+
+let resposta = await fetch("cadastro.php",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/x-www-form-urlencoded"
+},
+
+body:
+"nome="+encodeURIComponent(nome)+
+"&email="+encodeURIComponent(email)+
+"&senha="+encodeURIComponent(senha)
+
+});
+
+let resultado =
+await resposta.text();
+
+if(resultado.trim()=="sucesso"){
+
+window.location.href="inicio.php";
+
+}else{
+
+document.getElementById("mensagem")
+.innerText=resultado;
+
+}
+
+}
+
+async function login(){
+
+let email =
+document.getElementById("emailLogin").value;
+
+let senha =
+document.getElementById("senhaLogin").value;
+
+let resposta = await fetch("login.php",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/x-www-form-urlencoded"
+},
+
+body:
+"email="+encodeURIComponent(email)+
+"&senha="+encodeURIComponent(senha)
+
+});
+
+let resultado =
+await resposta.text();
+
+if(resultado.trim()=="sucesso"){
+
+window.location.href="inicio.php";
+
+}else{
+
+document.getElementById("mensagem")
+.innerText="E-mail ou senha incorretos";
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
